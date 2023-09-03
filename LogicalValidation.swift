@@ -44,22 +44,18 @@ public func validate(input: Int) -> Bool {
          2. 321895 ❌
          3. 124578 ✅
      */
-    var count = 0
-    for i in 0..<(inputInArray.count - 1) {
-        
-        if i >= 1 && inputInArray[i-1] == inputInArray[i+1]{
-            count = 0
-        }
-        
-        if Int(inputInArray[i])! + 1 == Int(inputInArray[i+1])! ||
-            Int(inputInArray[i])! - 1 == Int(inputInArray[i+1])! {
-            count += 1
+    var doubleTextCount = 0
+    let inputString = String(input)
+    let inputArray = Array(inputString)
+    
+    for i in 0..<(inputArray.count - 1) {
+        if inputArray[i] == inputArray[i + 1] {
+            doubleTextCount += 1
+            if doubleTextCount == 2 {
+                return false
+            }
         } else {
-            count = 0
-        }
-
-        if count == 2 {
-            return false
+            doubleTextCount = 0
         }
     }
 
@@ -69,19 +65,21 @@ public func validate(input: Int) -> Bool {
          2. 882211 ❌
          3. 887712 ✅
      */
-    var duplicateDoubleTextCount = 0
-    var isCounting = true
-    for i in 0..<(inputInArray.count - 1) {
-        if inputInArray[i] == inputInArray[i+1] && isCounting {
-            duplicateDoubleTextCount += 1
-            isCounting = false
-
-        } else {
-            isCounting = true
+    var consecutiveCount = 0
+    for i in stride(from: 0, to: inputArray.count - 1, by: 2) {
+        if inputArray[i] == inputArray[i + 1] {
+            consecutiveCount += 1
+            if consecutiveCount > 2 {
+                return false
+            }
         }
-
-        if duplicateDoubleTextCount == 3 {
-            return false
+    }
+    for i in stride(from: 1, to: inputArray.count , by: 2) {
+        if inputArray[i] == inputArray[i + 1] {
+            consecutiveCount += 1
+            if consecutiveCount > 2 {
+                return false
+            }
         }
     }
     
@@ -91,43 +89,37 @@ public func validate(input: Int) -> Bool {
 // Bonus Track
 
 // * เขียน program generate ตัวเลข Fibonacci (0, 1, 1, 2, 3, 5, 8, 13, …)
-public func generateFibonanci(number n: Int) -> [Int] {
-    guard n >= 2 else {
-        return Array(0..<n)
+func generateFibonacci(_ n: Int) -> [Int] {
+    var result = [Int]()
+    if n <= 0 {
+        return result
     }
     
-    var fibonanciList = [0, 1]
-    for index in 2..<n {
-        let nextFibonanci = fibonanciList[index - 1] + fibonanciList[index - 2]
-        fibonanciList.append(nextFibonanci)
+    var a = 0
+    var b = 1
+    
+    for _ in 1...n {
+        result.append(a)
+        let temp = a + b
+        a = b
+        b = temp
     }
     
-    return fibonanciList
+    return result
 }
 
 
 // * เขียนโค้ดในการ filter array จาก array ของตัวเลข 2 ชุด โดยให้สมาชิกของ array ชุดแรก เหลือเพียงแค่สมาชิกที่มีอยู่ใน array ชุดที่สองเท่านั้น โดยห้ามใช้ function ที่มีอยู่ เช่น map, filter, contain, etc.
 public func filterTwoArray(array1: [Int], array2: [Int]) -> [Int] {
-    var filteredArray1 = array1
-    let filteredArray2 = array2
-    var isFoundSameNum = false
-    var currentIndex = 0
+    var filterArray: [Int] = []
     
-    while currentIndex < filteredArray1.count {
-        for index2 in filteredArray2.indices {
-            if filteredArray1[currentIndex] == filteredArray2[index2] {
-                isFoundSameNum = true
+    for numArray1 in array1 {
+        for numArray2 in array2 {
+            if numArray1 == numArray2 {
+                filterArray.append(numArray2)
             }
         }
-        
-        if !isFoundSameNum {
-            filteredArray1.remove(at: currentIndex)
-        } else {
-            currentIndex += 1
-        }
-        
-        isFoundSameNum = false
     }
     
-    return filteredArray1
+    return filterArray
 }
