@@ -9,47 +9,41 @@ import Foundation
 
 public func validate(input: Int) -> Bool {
     
-    let inputInArray: [String] = Array(String(input)).map { String($0) }
+    let inputString = String(input)
+    let inputArray = Array(inputString)
     
+    if validateNoMoreThanSix(inputArray) &&
+        validateNoDoubleDuplicate(inputArray) &&
+        validateNoNextCloseNumber(inputArray) &&
+        validateNoMoreThanTwoOfDouble(inputArray) {
+        return true
+    }
+    
+    return false
+}
+
+func validateNoMoreThanSix(_ n: [Int]) -> Bool {
     /*
      1. input จะต้องมีความยาวมากกว่าหรือเท่ากับ 6 ตัวอักษร เช่น
         1. 17283 ❌
         2. 172839 ✅
      */
-    if inputInArray.count < 6 {
+    if n.count < 6 {
         return false
     }
-    
+    return true
+}
+
+func validateNoDoubleDuplicate(_ n: [Int]) -> Bool {
     /*
      2. input จะต้องกันไม่ให้มีเลขซ้ำติดกันเกิน 2 ตัว
         1. 111822 ❌
         2. 112762 ✅
      */
     var doubleTextCount = 0
-    for i in 0..<(inputInArray.count - 1) {
-        if inputInArray[i] == inputInArray[i+1] {
-            doubleTextCount += 1
-        }
-        else {
-            doubleTextCount = 0
-        }
-        if doubleTextCount == 2 {
-            return false
-        }
-    }
     
-    /*
-     3. input จะต้องกันไม่ให้มีเลขเรียงกันเกิน 2 ตัว
-         1. 123743 ❌
-         2. 321895 ❌
-         3. 124578 ✅
-     */
-    var doubleTextCount = 0
-    let inputString = String(input)
-    let inputArray = Array(inputString)
-    
-    for i in 0..<(inputArray.count - 1) {
-        if inputArray[i] == inputArray[i + 1] {
+    for i in 0..<(n.count - 1) {
+        if n[i] == n[i + 1] {
             doubleTextCount += 1
             if doubleTextCount == 2 {
                 return false
@@ -58,7 +52,49 @@ public func validate(input: Int) -> Bool {
             doubleTextCount = 0
         }
     }
+    
+    return true
+}
 
+func validateNoNextCloseNumber(_ n: [Int]) -> Bool {
+    /*
+     3. input จะต้องกันไม่ให้มีเลขเรียงกันเกิน 2 ตัว
+         1. 123743 ❌
+         2. 321895 ❌
+         3. 124578 ✅
+     */
+    
+    var nextCloseNumberCount = 0
+    
+    for i in 0..<(n.count - 1) {
+        if n[i] + 1 == n[i + 1] {
+            nextCloseNumberCount += 1
+            if nextCloseNumberCount == 2 {
+                return false
+            }
+        } else {
+            nextCloseNumberCount = 0
+        }
+    }
+    
+    nextCloseNumberCount = 0
+    
+    for i in 0..<(inputArray.count - 1) {
+        if n[i] - 1 == n[i + 1] {
+            nextCloseNumberCount += 1
+            if nextCloseNumberCount == 2 {
+                return false
+            }
+        } else {
+            nextCloseNumberCount = 0
+        }
+    }
+    
+    return true
+    
+}
+
+func validateNoMoreThanTwoOfDouble(_ n: [Int]) -> Bool {
     /*
      4.input จะต้องกันไม่ให้มีเลขชุดซ้ำ เกิน 2 ชุด
          1. 112233 ❌
@@ -100,9 +136,9 @@ func generateFibonacci(_ n: Int) -> [Int] {
     
     for _ in 1...n {
         result.append(a)
-        let temp = a + b
+        let nextNum = a + b
         a = b
-        b = temp
+        b = nextNum
     }
     
     return result
