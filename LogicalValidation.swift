@@ -22,24 +22,25 @@ public func validate(input: Int) -> Bool {
     return false
 }
 
-func validateNoMoreThanSix(_ n: [Int]) -> Bool {
-    /*
+/*
      1. input จะต้องมีความยาวมากกว่าหรือเท่ากับ 6 ตัวอักษร เช่น
         1. 17283 ❌
         2. 172839 ✅
      */
+func validateNoMoreThanSix(_ n: [Int]) -> Bool {
     if n.count < 6 {
         return false
     }
     return true
 }
 
-func validateNoDoubleDuplicate(_ n: [Int]) -> Bool {
-    /*
+/*
      2. input จะต้องกันไม่ให้มีเลขซ้ำติดกันเกิน 2 ตัว
         1. 111822 ❌
         2. 112762 ✅
-     */
+ */
+func validateNoDoubleDuplicate(_ n: [Int]) -> Bool {
+    
     var doubleTextCount = 0
     
     for i in 0..<(n.count - 1) {
@@ -56,14 +57,13 @@ func validateNoDoubleDuplicate(_ n: [Int]) -> Bool {
     return true
 }
 
-func validateNoNextCloseNumber(_ n: [Int]) -> Bool {
-    /*
+/*
      3. input จะต้องกันไม่ให้มีเลขเรียงกันเกิน 2 ตัว
          1. 123743 ❌
          2. 321895 ❌
          3. 124578 ✅
-     */
-    
+ */
+func validateNoNextCloseNumber(_ n: [Int]) -> Bool {
     var nextCloseNumberCount = 0
     
     for i in 0..<(n.count - 1) {
@@ -94,13 +94,14 @@ func validateNoNextCloseNumber(_ n: [Int]) -> Bool {
     
 }
 
-func validateNoMoreThanTwoOfDouble(_ n: [Int]) -> Bool {
-    /*
+/*
      4.input จะต้องกันไม่ให้มีเลขชุดซ้ำ เกิน 2 ชุด
          1. 112233 ❌
          2. 882211 ❌
          3. 887712 ✅
-     */
+ */
+func validateNoMoreThanTwoOfDouble(_ n: [Int]) -> Bool {
+    
     var consecutiveCount = 0
     for i in stride(from: 0, to: inputArray.count - 1, by: 2) {
         if inputArray[i] == inputArray[i + 1] {
